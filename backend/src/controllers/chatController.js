@@ -42,11 +42,12 @@ For now, here is a mock response to your question: "${question}" - The system wo
         });
         answer = result.response.text;
       } catch (aiError) {
-        console.error('Gemini API Error:', aiError);
-        return res.status(502).json({
-          message: 'Error communicating with Gemini AI service',
-          error: aiError.message,
-        });
+        console.warn('Gemini API Error. Falling back to demonstration response. Error:', aiError.message);
+        answer = `🤖 [AI Demo Assistant]
+I received your question: "${question}"
+
+Currently, the live Gemini API service returned an error: "${aiError.message}". 
+I have automatically generated this fallback response so you can test the database search and history list. This entire conversation has been successfully stored in your MongoDB Atlas cloud database!`;
       }
     }
 
